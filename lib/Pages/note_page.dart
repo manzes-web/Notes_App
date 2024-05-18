@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:notes_app/Themes/theme_provider.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_app/models/note_database.dart';
@@ -29,6 +28,21 @@ class _NotePageState extends State<NotePage> {
         builder: (context) => AlertDialog(
               content: TextField(
                 controller: textController,
+                cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                decoration: InputDecoration(
+                  labelText: 'Enter Note..',
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary),
+                  focusColor: Theme.of(context).colorScheme.inversePrimary,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary)),
+                ),
               ),
               title: const Text('ADD NOTES'),
               actions: [
@@ -64,6 +78,20 @@ class _NotePageState extends State<NotePage> {
               title: const Text('UPDATE NOTE'),
               content: TextField(
                 controller: textController,
+                decoration: InputDecoration(
+                  labelText: 'Update Note..',
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary),
+                  focusColor: Theme.of(context).colorScheme.inversePrimary,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary)),
+                ),
               ),
               actions: [
                 MaterialButton(
@@ -119,18 +147,6 @@ class _NotePageState extends State<NotePage> {
               );
             },
           ),
-          // Text(
-          //   themeProvider.isDarkMode ? 'dark' : 'Light',
-          //   style: const TextStyle(fontSize: 20),
-          // ),
-          // CupertinoSwitch(
-          //   value:
-          //       Provider.of<ThemeProvider>(context, listen: false).isDarkMode,
-          //   onChanged: (value) =>
-          //       Provider.of<ThemeProvider>(context, listen: false)
-          //           .toggleTheme(),
-          //   activeColor: Colors.green,
-          // )
         ],
       ),
       body: ListView.builder(
@@ -139,6 +155,7 @@ class _NotePageState extends State<NotePage> {
           itemBuilder: (context, index) {
             final note = notes[index];
             return Card(
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               color: Theme.of(context).colorScheme.inversePrimary,
               child: ListTile(
                 title: Row(
@@ -156,10 +173,12 @@ class _NotePageState extends State<NotePage> {
                     const SizedBox(
                       width: 20,
                     ),
-                    Text(
-                      note.text,
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.background),
+                    Expanded(
+                      child: Text(
+                        note.text,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.background),
+                      ),
                     ),
                   ],
                 ),
