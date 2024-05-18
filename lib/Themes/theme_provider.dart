@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/Themes/themes.dart';
 
 class ThemeProvider with ChangeNotifier {
-  //INITIALLY THEME DATA IS LIGHTMODE
+  //INITIAL VALUE OF THEME DATA IS LIGHTMODE
   ThemeData _themeData = lightMode;
 
   //GETTER METHOD TO ACCESS THEMEDATA
