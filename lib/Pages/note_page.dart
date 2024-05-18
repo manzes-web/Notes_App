@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:notes_app/Themes/theme_provider.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_app/models/note_database.dart';
@@ -101,9 +102,11 @@ class _NotePageState extends State<NotePage> {
             builder: (context, themeProvider, child) {
               return Row(
                 children: [
-                  Text(
-                    themeProvider.isDarkMode ? 'Dark' : 'Light',
-                    style: const TextStyle(fontSize: 20),
+                  Icon(
+                    themeProvider.isDarkMode
+                        ? Icons.dark_mode
+                        : Icons.light_mode,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                   ),
                   CupertinoSwitch(
                     value: themeProvider.isDarkMode,
