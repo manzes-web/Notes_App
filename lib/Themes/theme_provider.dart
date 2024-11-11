@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/Themes/themes.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class ThemeProvider with ChangeNotifier {
-  //INITIAL VALUE OF THEME DATA IS LIGHTMODE
-  ThemeData _themeData = lightMode;
+part 'theme_provider.g.dart';
 
-  //GETTER METHOD TO ACCESS THEMEDATA
-  ThemeData get themeData => _themeData;
+@riverpod
+class ThemeNotifier extends _$ThemeNotifier {
+  // Initial value of the theme (light mode)
+  @override
+  ThemeData build() => lightMode;
 
-  //GETTER METHOD TO SEE WHETEHER WE ARE IN DARK MODE OR NOT
-  bool get isDarkMode => _themeData == darkMode;
+  // Getter to check if dark mode is enabled
+  bool get isDarkMode => state == darkMode;
 
-  //SETTER METHOD TO SET NEW THEME
-  set themeData(ThemeData themeData) {
-    _themeData = themeData;
-    notifyListeners();
-  }
-
-  //TOGGLE METHOD TO TOGGLE THE THEME
+  // Method to toggle between light and dark themes
   void toggleTheme() {
-    if (_themeData == lightMode) {
-      themeData = darkMode;
-    } else {
-      themeData = lightMode;
-    }
+    state = isDarkMode ? lightMode : darkMode;
   }
 }

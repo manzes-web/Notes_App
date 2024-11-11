@@ -1,55 +1,61 @@
-import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class NoteDatabase extends ChangeNotifier {
+part 'note_database.g.dart';
+
+@riverpod
+class NoteDatabase extends _$NoteDatabase {
   static late Isar isar;
 
-  static Future<void> initialize() async {
-    //INITIALIZATION OF THE DATABASE
+  @override
+  Future<List<Note>> build() async {
+    // Initialize the database asynchronously on first access
     final dir = await getApplicationDocumentsDirectory();
     isar = await Isar.open(
       [NoteSchema],
       directory: dir.path,
     );
+    return fetchNotes(); // Return the initial list of notes
   }
 
-  //CREATING A NEW LIST OF  NOTES
-  final List<Note> notes = [];
-
-  //CREATING A NEW NOTE
-  Future<void> createNote(String inputText) async {
-    if (inputText.isNotEmpty) {
-      final newNote = Note()..text = inputText;
-
-      await isar.writeTxn(() => isar.notes.put(newNote));
+  // Fetch notes from the database
+  Future<List<Note>> fetchNotes() async {
+    try {
+      final notes = await isar.notes.where().findAll();
+      state = AsyncData(notes);
+      return notes;
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      return []; // Return an empty list in case of an error
     }
-
-    readNote();
   }
 
-//READING A NOTE
-  Future<void> readNote() async {
-    List<Note> fetchNotes = await isar.notes.where().findAll();
-    notes.clear();
-    notes.addAll(fetchNotes);
-    notifyListeners();
+  // Create a new note
+  Future<void> createNote(String inputText, String descriptionText) async {
+    if (inputText.isNotEmpty) {
+      final note = Note()..text = inputText;
+      final newNote = note..description = descriptionText;
+      await isar.writeTxn(() => isar.notes.put(newNote));
+      await fetchNotes(); // Refresh notes list
+    }
   }
 
-  //UPDATING A NOTE
-  Future<void> updateNote(int id, String text) async {
+  // Update a note
+  Future<void> updateNote(int id, String text, String description) async {
     final existingNote = await isar.notes.get(id);
     if (existingNote != null) {
       existingNote.text = text;
+      existingNote.description = description;
       await isar.writeTxn(() => isar.notes.put(existingNote));
-      readNote();
+      await fetchNotes(); // Refresh notes list
     }
   }
 
-  //DELETING A NOTE FROM DATABASE
+  // Delete a note
   Future<void> deleteNote(int id) async {
     await isar.writeTxn(() => isar.notes.delete(id));
-    await readNote();
+    await fetchNotes(); // Refresh notes list
   }
 }
