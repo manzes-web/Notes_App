@@ -111,7 +111,7 @@ class _NotePageState extends ConsumerState<NotePage> {
                 onChanged: (value) {
                   themeProvider.toggleTheme();
                 },
-                activeColor: Colors.green,
+                activeColor: Theme.of(context).colorScheme.primary,
               ),
             ],
           ),
