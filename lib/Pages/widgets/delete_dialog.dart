@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notes_app/Pages/widgets/apptextfield.dart';
 import 'package:notes_app/models/note_database.dart';
 
 class DeleteDialog extends ConsumerWidget {
@@ -15,6 +14,9 @@ class DeleteDialog extends ConsumerWidget {
     final textController = TextEditingController();
     final descriptionController = TextEditingController();
     return AlertDialog(
+      shadowColor: Theme.of(context).colorScheme.inversePrimary,
+      elevation: 0.5,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       title: const Text('Delete note'),
       content: const Text('Are you sure want to delete note?'),
       actions: [

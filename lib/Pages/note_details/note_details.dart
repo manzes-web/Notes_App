@@ -9,6 +9,7 @@ class NoteDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         title: Text(notes.text),
       ),
       body: Center(
