@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notes_app/Pages/widgets/apptextfield.dart';
 import 'package:notes_app/models/note_database.dart';
-import 'package:provider/provider.dart';
 
 class Dialogbox extends ConsumerWidget {
+  final String? title;
+  final String? labelTextTitle;
+  final String? labelTextDescription;
   const Dialogbox({
     super.key,
+    this.labelTextDescription,
+    this.labelTextTitle,
+    this.title,
   });
 
   @override
@@ -14,25 +19,27 @@ class Dialogbox extends ConsumerWidget {
     final textController = TextEditingController();
     final descriptionController = TextEditingController();
     return AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Apptextfield(
             textController: textController,
-            labelText: 'Enter note title...',
+            labelText: '$labelTextTitle',
           ),
           const SizedBox(
-            height: 8,
+            height: 12,
           ),
           Apptextfield(
             textController: descriptionController,
-            labelText: 'Enter note description...',
+            labelText: '$labelTextDescription',
           ),
         ],
       ),
-      title: const Text('ADD NOTES'),
+      title: Text('$title'),
       actions: [
         MaterialButton(
+          padding: const EdgeInsets.all(0),
           onPressed: () {
             Navigator.pop(context);
             textController.clear();
@@ -41,6 +48,7 @@ class Dialogbox extends ConsumerWidget {
           child: const Text('CANCEL'),
         ),
         MaterialButton(
+          padding: const EdgeInsets.all(0),
           onPressed: () {
             ref.read(noteDatabaseProvider.notifier).createNote(textController.text, descriptionController.text);
             Navigator.pop(context);

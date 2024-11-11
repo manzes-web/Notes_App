@@ -40,40 +40,6 @@ class _NotePageState extends ConsumerState<NotePage> {
     ref.read(noteDatabaseProvider.notifier).fetchNotes();
   }
 
-  // Create a new note
-  void createNote() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: TextField(
-          controller: textController,
-          cursorColor: Theme.of(context).colorScheme.inversePrimary,
-          decoration: InputDecoration(
-            labelText: 'Enter Note..',
-            labelStyle: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-            focusColor: Theme.of(context).colorScheme.inversePrimary,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Theme.of(context).colorScheme.inversePrimary)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Theme.of(context).colorScheme.inversePrimary)),
-          ),
-        ),
-        title: const Text('ADD NOTES'),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              // Call createNote method from NoteDatabase provider
-              ref.read(noteDatabaseProvider.notifier).createNote(textController.text, descriptionController.text);
-              Navigator.pop(context);
-              textController.clear();
-            },
-            child: const Text('ADD'),
-          )
-        ],
-      ),
-    );
-  }
-
   // Update an existing note
   void updateNotes(Note note) {
     textController.text = note.text;
@@ -81,19 +47,8 @@ class _NotePageState extends ConsumerState<NotePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text('UPDATE NOTE'),
-        // content: TextField(
-        //   controller: textController,
-        //   decoration: InputDecoration(
-        //     labelText: 'Update Note..',
-        //     labelStyle: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-        //     focusColor: Theme.of(context).colorScheme.inversePrimary,
-        //     border: OutlineInputBorder(
-        //         borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Theme.of(context).colorScheme.inversePrimary)),
-        //     focusedBorder: OutlineInputBorder(
-        //         borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Theme.of(context).colorScheme.inversePrimary)),
-        //   ),
-        // ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -102,7 +57,7 @@ class _NotePageState extends ConsumerState<NotePage> {
               labelText: 'Update note title...',
             ),
             const SizedBox(
-              height: 8,
+              height: 12,
             ),
             Apptextfield(
               textController: descriptionController,
@@ -111,6 +66,14 @@ class _NotePageState extends ConsumerState<NotePage> {
           ],
         ),
         actions: [
+          MaterialButton(
+            onPressed: () {
+              textController.clear();
+              descriptionController.clear();
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
           MaterialButton(
             onPressed: () {
               // Call updateNote method from NoteDatabase provider
@@ -124,11 +87,6 @@ class _NotePageState extends ConsumerState<NotePage> {
         ],
       ),
     );
-  }
-
-  // Delete a note
-  void deleteNote(int id) {
-    ref.read(noteDatabaseProvider.notifier).deleteNote(id);
   }
 
   @override
@@ -153,7 +111,7 @@ class _NotePageState extends ConsumerState<NotePage> {
                 onChanged: (value) {
                   themeProvider.toggleTheme();
                 },
-                activeColor: Colors.green,
+                activeColor: Theme.of(context).colorScheme.primary,
               ),
             ],
           ),
@@ -173,23 +131,31 @@ class _NotePageState extends ConsumerState<NotePage> {
                 ),
                 child: Card(
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.primary,
                   child: ListTile(
                     title: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
+                            color: Theme.of(context).colorScheme.inversePrimary,
                             shape: BoxShape.circle,
                           ),
-                          child: Text('${index + 1}'),
+                          child: Text(
+                            '${index + 1}',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 20),
                         Expanded(
                           child: Text(
                             note.text,
-                            style: TextStyle(color: Theme.of(context).colorScheme.surface),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.inversePrimary,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                       ],
@@ -201,7 +167,7 @@ class _NotePageState extends ConsumerState<NotePage> {
                           onPressed: () => updateNotes(note),
                           icon: Icon(
                             Icons.edit,
-                            color: Theme.of(context).colorScheme.surface,
+                            color: Theme.of(context).colorScheme.inversePrimary,
                           ),
                         ),
                         IconButton(
@@ -230,7 +196,11 @@ class _NotePageState extends ConsumerState<NotePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         onPressed: () => showDialog(
           context: context,
-          builder: (context) => const Dialogbox(),
+          builder: (context) => const Dialogbox(
+            labelTextDescription: 'Enter note description...',
+            title: 'ADD NOTES',
+            labelTextTitle: 'Enter note title',
+          ),
         ),
         child: const Icon(Icons.add),
       ),
