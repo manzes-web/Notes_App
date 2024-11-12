@@ -40,55 +40,6 @@ class _NotePageState extends ConsumerState<NotePage> {
     ref.read(noteDatabaseProvider.notifier).fetchNotes();
   }
 
-  // Update an existing note
-  void updateNotes(Note note) {
-    textController.text = note.text;
-    descriptionController.text = note.description;
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text('UPDATE NOTE'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Apptextfield(
-              textController: textController,
-              labelText: 'Update note title...',
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Apptextfield(
-              textController: descriptionController,
-              labelText: 'Update note description...',
-            ),
-          ],
-        ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              textController.clear();
-              descriptionController.clear();
-              Navigator.pop(context);
-            },
-            child: const Text('Cancel'),
-          ),
-          MaterialButton(
-            onPressed: () {
-              // Call updateNote method from NoteDatabase provider
-              ref.read(noteDatabaseProvider.notifier).updateNote(note.id, textController.text, descriptionController.text);
-              textController.clear();
-              descriptionController.clear();
-              Navigator.pop(context);
-            },
-            child: const Text('Update'),
-          )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final asyncNotes = ref.watch(noteDatabaseProvider);
@@ -164,7 +115,10 @@ class _NotePageState extends ConsumerState<NotePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          onPressed: () => context.pushNamed(Routes.noteUpdate.name),
+                          onPressed: () => context.pushNamed(
+                            Routes.noteUpdate.name,
+                            extra: note,
+                          ),
                           icon: Icon(
                             Icons.edit,
                             color: Theme.of(context).colorScheme.inversePrimary,

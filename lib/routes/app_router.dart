@@ -42,7 +42,8 @@ GoRouter _buildAppRouter(Ref ref) {
         path: Routes.noteUpdate.path,
         name: Routes.noteUpdate.name,
         builder: (context, state) {
-          return const NoteUpdate();
+          Note notes = state.extra as Note;
+          return NoteUpdate(notes: notes);
         },
       ),
     ],
