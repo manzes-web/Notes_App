@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notes_app/Pages/widgets/apptextfield.dart';
+import 'package:notes_app/Pages/widgets/datetime_textfield.dart';
 import 'package:notes_app/models/note_database.dart';
 
 class Dialogbox extends ConsumerWidget {
@@ -18,6 +19,7 @@ class Dialogbox extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textController = TextEditingController();
     final descriptionController = TextEditingController();
+
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.primary,
       content: Column(
@@ -34,6 +36,10 @@ class Dialogbox extends ConsumerWidget {
             textController: descriptionController,
             labelText: '$labelTextDescription',
           ),
+          const SizedBox(
+            height: 12,
+          ),
+          const DatetimeTextfield(),
         ],
       ),
       title: Text('$title'),
