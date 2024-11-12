@@ -164,7 +164,7 @@ class _NotePageState extends ConsumerState<NotePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          onPressed: () => updateNotes(note),
+                          onPressed: () => context.pushNamed(Routes.noteUpdate.name),
                           icon: Icon(
                             Icons.edit,
                             color: Theme.of(context).colorScheme.inversePrimary,

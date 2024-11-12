@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notes_app/Pages/note_details/note_details.dart';
+import 'package:notes_app/Pages/note_details/pages/note_details.dart';
+import 'package:notes_app/Pages/note_details/pages/note_update.dart';
 import 'package:notes_app/Pages/note_page.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_app/routes/routes.dart';
@@ -35,6 +36,13 @@ GoRouter _buildAppRouter(Ref ref) {
         builder: (context, state) {
           Note notes = state.extra as Note;
           return NoteDetails(notes: notes);
+        },
+      ),
+      GoRoute(
+        path: Routes.noteUpdate.path,
+        name: Routes.noteUpdate.name,
+        builder: (context, state) {
+          return const NoteUpdate();
         },
       ),
     ],
