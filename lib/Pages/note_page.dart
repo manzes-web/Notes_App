@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:notes_app/Pages/widgets/delete_dialog.dart';
-import 'package:notes_app/Pages/widgets/dialogbox.dart';
 import 'package:notes_app/Themes/theme_provider.dart';
 import 'package:notes_app/models/note_database.dart';
 import 'package:notes_app/routes/routes.dart';
@@ -146,14 +145,7 @@ class _NotePageState extends ConsumerState<NotePage> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(eccentricity: 1),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        onPressed: () => showDialog(
-          context: context,
-          builder: (context) => const Dialogbox(
-            labelTextDescription: 'Enter note description...',
-            title: 'ADD NOTES',
-            labelTextTitle: 'Enter note title',
-          ),
-        ),
+        onPressed: () => context.pushNamed(Routes.noteAdd.name),
         child: const Icon(Icons.add),
       ),
     );

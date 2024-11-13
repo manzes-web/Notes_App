@@ -44,12 +44,12 @@ class NoteDatabase extends _$NoteDatabase {
   }
 
   // Update a note
-  Future<void> updateNote(int id, String text, String description) async {
+  Future<void> updateNote(int id, String text, String description, String date) async {
     final existingNote = await isar.notes.get(id);
     if (existingNote != null) {
       existingNote.text = text;
       existingNote.description = description;
-
+      existingNote.dateTime = date;
       await isar.writeTxn(() => isar.notes.put(existingNote));
       await fetchNotes(); // Refresh notes list
     }
