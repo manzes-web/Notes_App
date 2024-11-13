@@ -33,10 +33,11 @@ class NoteDatabase extends _$NoteDatabase {
   }
 
   // Create a new note
-  Future<void> createNote(String inputText, String descriptionText) async {
+  Future<void> createNote(String inputText, String descriptionText, String date) async {
     if (inputText.isNotEmpty) {
-      final note = Note()..text = inputText;
-      final newNote = note..description = descriptionText;
+      final noteText = Note()..text = inputText;
+      final noteDescription = noteText..description = descriptionText;
+      final newNote = noteDescription..dateTime = date;
       await isar.writeTxn(() => isar.notes.put(newNote));
       await fetchNotes(); // Refresh notes list
     }
@@ -48,6 +49,7 @@ class NoteDatabase extends _$NoteDatabase {
     if (existingNote != null) {
       existingNote.text = text;
       existingNote.description = description;
+
       await isar.writeTxn(() => isar.notes.put(existingNote));
       await fetchNotes(); // Refresh notes list
     }
