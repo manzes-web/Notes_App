@@ -24,14 +24,14 @@ class NoteDetails extends StatelessWidget {
                   onTap: () {
                     context.pushNamed(Routes.noteUpdate.name, extra: notes);
                   },
-                  child: const Text('update'),
+                  child: const Text('Update note'),
                 ),
                 PopupMenuItem(
                   onTap: () => showDialog(
                     context: context,
                     builder: (context) => DeleteDialog(id: notes.id),
                   ),
-                  child: const Text('Delete'),
+                  child: const Text('Delete note'),
                 ),
               ];
             },

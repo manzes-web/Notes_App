@@ -8,28 +8,19 @@ import 'package:notes_app/models/note_database.dart';
 import 'package:go_router/go_router.dart';
 import 'package:notes_app/routes/routes.dart';
 
-class NoteUpdate extends ConsumerStatefulWidget {
-  final Note notes;
-  const NoteUpdate({
+class AddNote extends ConsumerStatefulWidget {
+  const AddNote({
     super.key,
-    required this.notes,
   });
 
   @override
-  ConsumerState<NoteUpdate> createState() => _NoteUpdateState();
+  ConsumerState<AddNote> createState() => _AddNoteState();
 }
 
-class _NoteUpdateState extends ConsumerState<NoteUpdate> {
-  late final TextEditingController textController;
-  late final TextEditingController descriptionController;
-  late final TextEditingController dateController;
-  @override
-  void initState() {
-    textController = TextEditingController(text: widget.notes.text);
-    descriptionController = TextEditingController(text: widget.notes.description);
-    dateController = TextEditingController(text: widget.notes.dateTime);
-    super.initState();
-  }
+class _AddNoteState extends ConsumerState<AddNote> {
+  final TextEditingController textController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
 
   @override
   void dispose() {
@@ -42,13 +33,13 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
   @override
   Widget build(BuildContext context) {
     // Update an existing note
-    void updateNotes(Note note) {
+    void addNote() {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: const Text('Update note'),
-          content: const Text('Are you sure want to Update note?'),
+          content: const Text('Are you sure want to add this note?'),
           actions: [
             MaterialButton(
               onPressed: () {
@@ -61,8 +52,7 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
             MaterialButton(
               onPressed: () {
                 // Call updateNote method from NoteDatabase provider
-                ref.read(noteDatabaseProvider.notifier).updateNote(
-                      note.id,
+                ref.read(noteDatabaseProvider.notifier).createNote(
                       textController.text,
                       descriptionController.text,
                       dateController.text,
@@ -72,7 +62,7 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
                 // context.pop();
                 context.pushNamed(Routes.home.name);
               },
-              child: const Text('Update'),
+              child: const Text('Add'),
             )
           ],
         ),
@@ -82,7 +72,7 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        title: const Text('UPDATE NOTE'),
+        title: const Text('Add NOTE'),
         centerTitle: true,
       ),
       body: Padding(
@@ -91,12 +81,12 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
           children: [
             Apptextfield(
               textController: textController,
-              labelText: 'Update title..',
+              labelText: 'Add title..',
             ),
             const SizedBox(height: 12),
             Apptextfield(
               textController: descriptionController,
-              labelText: 'Update description...',
+              labelText: 'Add description...',
             ),
             const SizedBox(height: 12),
             DatetimeTextfield(
@@ -106,8 +96,8 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
               height: 12,
             ),
             AppPrimaryButton(
-              onTap: () => updateNotes(widget.notes),
-              buttonText: 'Update',
+              onTap: () => addNote(),
+              buttonText: 'Add',
             ),
           ],
         ),
