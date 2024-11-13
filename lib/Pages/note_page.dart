@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:notes_app/Pages/widgets/apptextfield.dart';
 import 'package:notes_app/Pages/widgets/delete_dialog.dart';
 import 'package:notes_app/Pages/widgets/dialogbox.dart';
 import 'package:notes_app/Themes/theme_provider.dart';
-import 'package:notes_app/models/note.dart';
 import 'package:notes_app/models/note_database.dart';
 import 'package:notes_app/routes/routes.dart';
 

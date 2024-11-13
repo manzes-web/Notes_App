@@ -19,6 +19,7 @@ class Dialogbox extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textController = TextEditingController();
     final descriptionController = TextEditingController();
+    final dateController = TextEditingController();
 
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -39,7 +40,9 @@ class Dialogbox extends ConsumerWidget {
           const SizedBox(
             height: 12,
           ),
-          const DatetimeTextfield(),
+          DatetimeTextfield(
+            dateController: dateController,
+          ),
         ],
       ),
       title: Text('$title'),
@@ -56,10 +59,11 @@ class Dialogbox extends ConsumerWidget {
         MaterialButton(
           padding: const EdgeInsets.all(0),
           onPressed: () {
-            ref.read(noteDatabaseProvider.notifier).createNote(textController.text, descriptionController.text);
+            ref.read(noteDatabaseProvider.notifier).createNote(textController.text, descriptionController.text, dateController.text);
             Navigator.pop(context);
             textController.clear();
             descriptionController.clear();
+            dateController.clear();
           },
           child: const Text('ADD'),
         ),

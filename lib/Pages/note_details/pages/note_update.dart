@@ -22,10 +22,12 @@ class NoteUpdate extends ConsumerStatefulWidget {
 class _NoteUpdateState extends ConsumerState<NoteUpdate> {
   late final TextEditingController textController;
   late final TextEditingController descriptionController;
+  late final TextEditingController dateController;
   @override
   void initState() {
     textController = TextEditingController(text: widget.notes.text);
     descriptionController = TextEditingController(text: widget.notes.description);
+    dateController = TextEditingController(text: widget.notes.dateTime);
     super.initState();
   }
 
@@ -33,7 +35,7 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
   void dispose() {
     textController.dispose();
     descriptionController.dispose();
-
+    dateController.dispose();
     super.dispose();
   }
 
@@ -92,12 +94,15 @@ class _NoteUpdateState extends ConsumerState<NoteUpdate> {
               labelText: 'Update description...',
             ),
             const SizedBox(height: 12),
-            const DatetimeTextfield(),
+            DatetimeTextfield(
+              dateController: dateController,
+            ),
             const SizedBox(
               height: 12,
             ),
             AppPrimaryButton(
               onTap: () => updateNotes(widget.notes),
+              buttonText: 'Update',
             ),
           ],
         ),

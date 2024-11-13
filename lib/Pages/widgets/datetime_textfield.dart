@@ -6,26 +6,30 @@ import 'package:intl/intl.dart';
 import 'package:notes_app/Themes/theme_provider.dart';
 
 class DatetimeTextfield extends ConsumerStatefulWidget {
-  const DatetimeTextfield({super.key});
+  final TextEditingController dateController;
+  const DatetimeTextfield({
+    super.key,
+    required this.dateController,
+  });
 
   @override
   ConsumerState<DatetimeTextfield> createState() => _DatetimeTextfieldState();
 }
 
 class _DatetimeTextfieldState extends ConsumerState<DatetimeTextfield> {
-  final dateController = TextEditingController();
+  // final dateController = TextEditingController();
   DateTime? selectedDate;
 
   @override
   void initState() {
     super.initState();
     selectedDate = DateTime.now(); // Set initial date value
-    dateController.text = DateFormat.yMd().format(selectedDate!); // Display initial date in the text field
+    widget.dateController.text = DateFormat.yMd().format(selectedDate!); // Display initial date in the text field
   }
 
   @override
   void dispose() {
-    dateController.dispose();
+    widget.dateController.dispose();
     super.dispose();
   }
 
@@ -63,7 +67,7 @@ class _DatetimeTextfieldState extends ConsumerState<DatetimeTextfield> {
     if (pickedDate != null) {
       setState(() {
         selectedDate = pickedDate;
-        dateController.text = "${selectedDate?.toLocal()}".split(' ')[0]; // Display in YYYY-MM-DD format
+        widget.dateController.text = "${selectedDate?.toLocal()}".split(' ')[0]; // Display in YYYY-MM-DD format
       });
     }
   }
@@ -72,7 +76,7 @@ class _DatetimeTextfieldState extends ConsumerState<DatetimeTextfield> {
   Widget build(BuildContext context) {
     final themeProvider = ref.read(themeNotifierProvider.notifier);
     return Apptextfield(
-      textController: dateController,
+      textController: widget.dateController,
       labelText: 'Pick a date',
       onTap: () {
         _pickDate(context, themeProvider);
